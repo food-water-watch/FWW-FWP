@@ -11,8 +11,11 @@ Lets create a directory where we’ll store the binary, the scripts and the pkg
 
 ``` cd ; mkdir firmwareInstaller ; cd firmwareInstaller
 diskutil mount Recovery\ HD 
+
 hdiutil attach -quiet /Volumes/Recovery\ HD/com.apple.recovery.boot/BaseSystem.dmg
-cp /Volumes/Mac\ OS\ X\ Base\ System/Applications/Utilities/Firmware\ Password\ Utility.app/Contents/Resources/setregproptool .
+
+cp /Volumes/Mac\ OS\ X\ Base\ System/Applications/Utilities/Firmware\ Password\ Utility.app/Contents/Resources/setregproptool
+
 hdiutil detach /Volumes/Mac\ OS\ X\ Base\ System/
 diskutil unmount Recovery\ HD ```
 
@@ -42,15 +45,21 @@ enable.postflight.sh could be something like this
 ###
 # VERSION 1.0 of the password enabler. Use the same version to disable it.
 ###
-# Deactivating the password if it was set. Asuming the password was blank
-./setregproptool -d -o “”
-sleep 1
-# Setting the password and the mode
-$setregproptool -m command -p “NewPassword” -o ""
+## Fix Permissions
+sleep 5
+chown root:wheel /usr/sbin/setregproptool
+chmod 755 /usr/sbin/setregproptool
+# Deactivating the password if it was set. The script will fail or hang if the firmware password set does not match the one listed below.
+/usr/sbin/setregproptool -d -o "veryoldpass"
+sleep 5
+# Setting the password and the mode. This will fail if the old password does not match exactly. 
+# for 10.10 use sudo /usr/sbin/firmwarepasswd -verify to verify that the old password equals the veryoldpass below if it doesn't the script won't run.
+# To verify the password on 10.6, 10.7, 10.8 & 10.9 run the BinaryOnly package first then run this command
+#  
+sudo /usr/sbin/setregproptool -m command -p "verynewpass" -o "veryoldpass"
 # Logging
 echo "The firmware password version 1.0 is now set up!"
 exit 0
-and disable.postflight.sh could be
 ```
 
 ```
@@ -75,7 +84,16 @@ As long a you use the same pkg name you can verify what version of the password 
 
 Then use the correct uninstaller
 
-Packing the installer should be easy enough :)
+Packaging the Firmware Package
+=======
+Use the existing Packages projects as a guide. Keep in mind the critical steps are outlined below. Remember these packages require a reboot and propper permissions when adding the binary.
+
+![alt tag](https://raw.githubusercontent.com/jonbrown21/FWW-FWP/master/img/1.png)
+![alt tag](https://raw.githubusercontent.com/jonbrown21/FWW-FWP/master/img/2.png)
+![alt tag](https://raw.githubusercontent.com/jonbrown21/FWW-FWP/master/img/3.png)
+![alt tag](https://raw.githubusercontent.com/jonbrown21/FWW-FWP/master/img/4.png)
+![alt tag](https://raw.githubusercontent.com/jonbrown21/FWW-FWP/master/img/5.png)
+![alt tag](https://raw.githubusercontent.com/jonbrown21/FWW-FWP/master/img/6.png)
 
 Let the mass deployment of firmware passwords begin!
 
