@@ -12,13 +12,13 @@
     <choices-outline>
         <line choice="installer_choice_1"/>
     </choices-outline>
-    <choice id="installer_choice_1" title="FWP" description="">
-        <pkg-ref id="org.fwwatch.pkg.FWP"/>
+    <choice id="installer_choice_1" title="BinaryOnly" description="">
+        <pkg-ref id="org.fwwatch.pkg.BinaryOnly"/>
     </choice>
     <!--+==========================+
         |    Package References    |
         +==========================+-->
-    <pkg-ref id="org.fwwatch.pkg.FWP" version="3.0" auth="Root" installKBytes="33">file:./Contents/Packages/FWP.pkg</pkg-ref>
+    <pkg-ref id="org.fwwatch.pkg.BinaryOnly" version="1.0" auth="Root" installKBytes="33" onConclusion="RequireRestart">file:./Contents/Packages/BinaryOnly.pkg</pkg-ref>
     <!--+==========================+
         |    JavaScript Scripts    |
         +==========================+-->
