@@ -9,7 +9,7 @@ Extraction of binary
 
 Lets create a directory where we’ll store the binary, the scripts and the pkg
 
-``` cd ; mkdir firmwareInstaller ; cd firmwareInstaller
+` cd ; mkdir firmwareInstaller ; cd firmwareInstaller
 diskutil mount Recovery\ HD 
 
 hdiutil attach -quiet /Volumes/Recovery\ HD/com.apple.recovery.boot/BaseSystem.dmg
@@ -17,11 +17,11 @@ hdiutil attach -quiet /Volumes/Recovery\ HD/com.apple.recovery.boot/BaseSystem.d
 cp /Volumes/Mac\ OS\ X\ Base\ System/Applications/Utilities/Firmware\ Password\ Utility.app/Contents/Resources/setregproptool
 
 hdiutil detach /Volumes/Mac\ OS\ X\ Base\ System/
-diskutil unmount Recovery\ HD ```
+diskutil unmount Recovery\ HD `
 
 Now for the sake of documenting check which version you just got and read through the available switches
 
-``` sudo ./setregproptool ```
+` sudo ./setregproptool `
 
 I am getting this on a 10.10
 
@@ -40,7 +40,7 @@ Also it is a good practice that when you set the password to blank when disablin
 touch enable.postflight.sh disable.postflight.sh
 enable.postflight.sh could be something like this
 
-```
+`
 #!/bin/sh
 ###
 # VERSION 1.0 of the password enabler. Use the same version to disable it.
@@ -60,9 +60,9 @@ sudo /usr/sbin/setregproptool -m command -p "verynewpass" -o "veryoldpass"
 # Logging
 echo "The firmware password version 1.0 is now set up!"
 exit 0
-```
+`
 
-```
+`
 #!/bin/sh
 ###
 # VERSION 1.0 of the password disabler. Works only if the password was set up using the same version enabler
@@ -78,9 +78,9 @@ echo "Firmware password now set to blank and prompt disabled, reboot for the cha
 pkgutil --forget com.mycompany.pkg.firm.pass
 exit 0
 As long a you use the same pkg name you can verify what version of the password a computer has by running
-```
+`
 
-``` pkgutil --info com.mycompany.pkg.firm.pass ```
+` pkgutil --info com.mycompany.pkg.firm.pass `
 
 Then use the correct uninstaller
 
